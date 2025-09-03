@@ -151,6 +151,7 @@ class MainEXT:
                 "Mfthue",
                 "Bindparameterref",
                 "Value0",
+                "Rgbbrightness",
             ]
 
         for param in param_names:
