@@ -11,6 +11,8 @@ __pycache__/
 Backup/
 *.tox
 *.bak
+*.*.toe
+
 
 # VS Code
 .vscode/
@@ -22,6 +24,7 @@ Thumbs.db
 
 # Logs
 *.log
+/logs
 
 # Other
 .idea/
