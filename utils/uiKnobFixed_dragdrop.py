@@ -56,8 +56,22 @@ def onDropGetResults(comp, info):
 	target.pars(par_name)[0].mode = ParMode.BIND
 	target.pars(par_name)[0].bindExpr = f"op('{droppedOn}').par.Value0"
 
-	# create labels with a delay to make sure that the reference is applied correctly previously
-	run("parent().LabelKnob(op(args[0]))", comp.path, delayFrames=2)
+	print(comp.digits)
+
+	deckA = 8
+	deckB = 16
+	knob_base_path = comp.path[:-1] # remove knob digit
+
+	if comp.digits <= deckA:
+		for knob in range(deckA-8,deckA):
+			
+			# create labels with a delay to make sure that the reference is applied correctly previously
+			run("parent().LabelKnob(op(args[0]))", knob_base_path + str(knob), delayFrames=2)
+			# TODO: Traceback error when dragging parameters onto knob9
+	elif comp.digits <= deckB:
+		for knob in range(deckB-8,deckB):
+			# create labels with a delay to make sure that the reference is applied correctly previously
+			run("parent().LabelKnob(op(args[0]))", knob_base_path + str(knob), delayFrames=2)
 	
 	# check all the other knobs for 
 
