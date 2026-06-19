@@ -48,37 +48,16 @@ def onDropGetResults(comp, info):
 	"""
 	debug('\nonDropGetResults comp:', comp.path, '- info:\n', info)
 	droppedOn = comp.path
-
-
 	dropped_item = info.get("dragItems")[0]
-	# print(dropped_item.name)
-	# print(dropped_item.owner)
 	target = op(dropped_item.owner)
 	par_name = dropped_item.name
+
+	# create bind Reference from the dropped parameter to the knob value
 	target.pars(par_name)[0].mode = ParMode.BIND
 	target.pars(par_name)[0].bindExpr = f"op('{droppedOn}').par.Value0"
 
-	# create Label from bound parameters
-	
-	p = comp.par.Value0
-	bound_par = p.bindReferences
-	print(bound_par)
-
-	p_exclude_list = ["midiFighterTwisterV2"] 
-
-	# TODO: check the list creation again this throws errors
-	bound_par_names = [
-    x.name
-    for x in bound_par
-    if not any(ex in x.owner for ex in p_exclude_list)]
-	print(bound_par_names)
-	label = ""
-	for name in bound_par_names:
-		if label != "":
-			label += ", "
-		label += name
-		
-	comp.par.Widgetlabel = label
+	# create labels with a delay to make sure that the reference is applied correctly previously
+	run("parent().LabelKnob(op(args[0]))", comp.path, delayFrames=2)
 	
 	# check all the other knobs for 
 

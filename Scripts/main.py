@@ -184,3 +184,25 @@ class MainEXT:
 
         # delayed application
         self.DelayHelper(self.ApplyAssignments, apply_delay)
+
+    
+    def LabelKnob(self, comp):
+        """
+        create Label from bound parameters
+        """
+        p = comp.par.Value0
+        bound_par = p.bindReferences
+
+        p_exclude_list = ["midiFighterTwisterV2"] 
+
+        # TODO: check the list creation again this throws errors
+        bound_par_names = [
+        x.name
+        for x in bound_par
+        if not any(ex in x.owner.path for ex in p_exclude_list)
+        ]
+        print(bound_par_names)
+        label = ", ".join(bound_par_names)
+            
+        comp.par.Widgetlabel = label
+        
