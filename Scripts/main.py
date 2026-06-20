@@ -195,7 +195,6 @@ class MainEXT:
 
         p_exclude_list = ["midiFighterTwisterV2"] 
 
-        # TODO: check the list creation again this throws errors
         bound_par_names = [
         x.name
         for x in bound_par
@@ -205,4 +204,3 @@ class MainEXT:
         label = ", ".join(bound_par_names)
             
         comp.par.Widgetlabel = label
-        
