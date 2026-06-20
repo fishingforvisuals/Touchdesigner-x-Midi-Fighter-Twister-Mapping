@@ -46,7 +46,7 @@ def onDropGetResults(comp, info):
 			'dropChoice': drop menu choice selected
 			'modified': object modified by drop
 	"""
-	debug('\nonDropGetResults comp:', comp.path, '- info:\n', info)
+	# debug('\nonDropGetResults comp:', comp.path, '- info:\n', info)
 	droppedOn = comp.path
 	dropped_item = info.get("dragItems")[0]
 	target = op(dropped_item.owner)
@@ -56,13 +56,9 @@ def onDropGetResults(comp, info):
 	target.pars(par_name)[0].mode = ParMode.BIND
 	target.pars(par_name)[0].bindExpr = f"op('{droppedOn}').par.Value0"
 
-	# prepare knob base path to update every knob
-	knob_base_path = comp.path[:-len(str(comp.digits))] # remove knob digit
-
-	# update every knob
-	for knob in range(1,17):
-		# create labels with a delay to make sure that the reference is applied correctly previously
-		run("parent().LabelKnob(op(args[0]))", knob_base_path + str(knob), delayFrames=2)
+	update_range = [1,17]
+	# update labels in specific range via main.py script
+	run("parent().LabelKnob(args[0], args[1] )", comp, update_range, delayFrames=1)
 	
 
 # callbacks for when associated Panel is being dragged

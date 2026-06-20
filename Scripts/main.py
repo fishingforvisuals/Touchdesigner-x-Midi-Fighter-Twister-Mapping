@@ -186,21 +186,34 @@ class MainEXT:
         self.DelayHelper(self.ApplyAssignments, apply_delay)
 
     
-    def LabelKnob(self, comp):
+    def LabelKnob(self, comp, update_range):
         """
-        create Label from bound parameters
+        Trigger: on starting td and dragging new parameters onto the midi controller
+        function: create Label from bound parameters
+
+        Args:
+            comp: is the td COMP that updates the labels
+            range: list of min and max of which knobs get updated
         """
-        p = comp.par.Value0
-        bound_par = p.bindReferences
 
-        p_exclude_list = ["midiFighterTwisterV2"] 
+        # prepare knob base path to update every knob
+        knob_base_path = comp.path[:-len(str(comp.digits))] # remove knob digit
 
-        bound_par_names = [
-        x.name
-        for x in bound_par
-        if not any(ex in x.owner.path for ex in p_exclude_list)
-        ]
-        print(bound_par_names)
-        label = ", ".join(bound_par_names)
-            
-        comp.par.Widgetlabel = label
+
+        # update every knob in range
+        for knob in range(update_range[0], update_range[1]):
+            # create labels with a delay to make sure that the reference is applied correctly previously
+            knob_comp =  knob_base_path + str(knob)
+            p = op(knob_comp).par.Value0
+            bound_par = p.bindReferences
+
+            p_exclude_list = ["midiFighterTwisterV2"] 
+
+            bound_par_names = [
+            x.name
+            for x in bound_par
+            if not any(ex in x.owner.path for ex in p_exclude_list)
+            ]
+            label = ", ".join(bound_par_names)
+                
+            op(knob_comp).par.Widgetlabel = label
