@@ -57,8 +57,9 @@ def onDropGetResults(comp, info):
 	target.pars(par_name)[0].bindExpr = f"op('{droppedOn}').par.Value0"
 
 	update_range = [1,17]
+	scope = dropped_item.owner
 	# update labels in specific range via main.py script
-	run("parent().LabelKnob(args[0], args[1] )", comp, update_range, delayFrames=1)
+	run("parent().LabelKnob(args[0], args[1], args[2])", comp, update_range, scope, delayFrames=1)
 	
 
 # callbacks for when associated Panel is being dragged
