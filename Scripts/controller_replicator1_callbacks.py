@@ -1,11 +1,11 @@
 def onRemoveReplicant(comp, replicant):
     print("remove replicants")
-    parent().StoreCurrentValues(param_name="Knoblevelcolorr")
-    parent().StoreCurrentValues(param_name="Knoblevelcolorg")
-    parent().StoreCurrentValues(param_name="Knoblevelcolorb")
-    parent().StoreCurrentValues(param_name="Mfthue")
-    parent().StoreCurrentValues(param_name="Bindparameterref")
-    parent().StoreCurrentValues(param_name="Value0")
+    # parent().StoreCurrentValues(param_name="Knoblevelcolorr")
+    # parent().StoreCurrentValues(param_name="Knoblevelcolorg")
+    # parent().StoreCurrentValues(param_name="Knoblevelcolorb")
+    # parent().StoreCurrentValues(param_name="Mfthue")
+    # parent().StoreCurrentValues(param_name="Bindparameterref")
+    # parent().StoreCurrentValues(param_name="Value0")
 
     replicant.destroy()
     return
@@ -32,6 +32,6 @@ def onReplicate(comp, allOps, newOps, template, master):
         # c.par.clone = comp.par.master
     pass
 
-    parent().DelayHelper(parent().ApplyAssignments, delay_frames=120)
+    # parent().DelayHelper(parent().ApplyAssignments, delay_frames=120)
 
     return

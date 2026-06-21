@@ -1,4 +1,4 @@
-class MainEXT:
+class MidiControllerEXT:
     def __init__(self, ownerCOMP):
         self.ownerCOMP = ownerCOMP
         oop = self.ownerCOMP.op
@@ -184,8 +184,24 @@ class MainEXT:
 
         # delayed application
         self.DelayHelper(self.ApplyAssignments, apply_delay)
+        
+    def ChangeKnobLED(self, knob):
+        # import sys
+        # sys.path.append(f"{project.folder}")
 
-    
+        from utils import knob_utils
+
+        source = op(f"{knob.path}/par1")
+        r, g, b = source[0].eval(), source[1].eval(), source[2].eval()
+        midi_hue = knob_utils.rgb_to_hue(r, g, b)
+
+        # Midi Fighter Twister has a different hue mapping compared to TD
+        # reversing the values solves the issue
+        midiout = op(f"{knob.path}/constant1")
+        midiout_remap = ((1 - midi_hue) -1/3) %1
+        midiout.par.value0 = midiout_remap
+        print("midiout:",midiout_remap)
+            
     def LabelKnob(self, comp, update_range, scope):
         """
         Trigger: on starting td and dragging new parameters onto the midi controller
@@ -194,9 +210,10 @@ class MainEXT:
         Args:
             comp: is the td COMP that updates the labels
             range: list of min and max of which knobs get updated, adds possibility to use two decks of visuals for example
-            scope: op.path that filters bindReferences to update from
+            scope: op that filters bindReferences to update from
         """
-
+        print(comp)
+        
         knob_base_path = comp.path[:-len(str(comp.digits))] # remove knob digit
 
 
