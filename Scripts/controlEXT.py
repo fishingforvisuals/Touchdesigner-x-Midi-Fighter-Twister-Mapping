@@ -5,8 +5,8 @@ class MidiControllerEXT:
         self.oop = oop
 
         # references to your tables
-        self.source_table = self.oop("opfind1")
-        self.target_table = self.oop("midi_assignments")
+        # self.source_table = self.oop("opfind1")
+        self.target_table = self.oop("knob_settings")
 
     def GetColIndex(self, table, col_name):
         """Return the index of col_name in the first row of the table"""
@@ -15,6 +15,17 @@ class MidiControllerEXT:
             if cell.val == col_name:
                 return i
         return None  # not found
+    
+    def StoreSettings(self, param, knob):
+        """
+        Store the settings of each knob and take all the listed parameters from the target_table (which is the knob_settings table). With the arguments this is a per parameter approach which gives you the ability to decide how many parameters should be stored with this function.
+        Args:
+            param: is the parameter name that will be stored
+            knob: defines from which operator to pull the parameter value from
+        """
+        self.target_table[knob.name, param] = knob.par[param]
+
+
 
     def StoreCurrentValues(self, param_name):
         """
@@ -186,12 +197,18 @@ class MidiControllerEXT:
         self.DelayHelper(self.ApplyAssignments, apply_delay)
         
     def ChangeKnobLED(self, knob):
+        """
+        updates the knobs ui and midi controller color. Converts values accordingly
+        Args:
+            knob: knob operator that will be updated
+        """
         import sys
         sys.path.append(f"{project.folder}")
 
         from utils import knob_utils
 
         source = op(f"{knob.path}/par1")
+        # convert from rgb to hsv
         r, g, b = source[0].eval(), source[1].eval(), source[2].eval()
         midi_hue = knob_utils.rgb_to_hue(r, g, b)
         

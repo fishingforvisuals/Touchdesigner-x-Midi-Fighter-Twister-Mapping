@@ -20,9 +20,8 @@ def onReplicate(comp, allOps, newOps, template, master):
         # reset LED status to make it susceptable to new values
         midiout = c.op("constant1")
         midiout.par.value0 = 0
-        # Run the existing chopexec2 DAT inside the replicants to initialize the MFT LED
-        # recreate knob colors
         
+        # recreate knob colors
         try:
             parent().ChangeKnobLED(c)
             print("ran changeLED script onReplicate")
