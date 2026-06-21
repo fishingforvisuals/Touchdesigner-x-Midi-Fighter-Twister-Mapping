@@ -1,5 +1,5 @@
 def onRemoveReplicant(comp, replicant):
-    print("remove replicants")
+    # print("remove replicants")
     # parent().StoreCurrentValues(param_name="Knoblevelcolorr")
     # parent().StoreCurrentValues(param_name="Knoblevelcolorg")
     # parent().StoreCurrentValues(param_name="Knoblevelcolorb")
@@ -12,7 +12,7 @@ def onRemoveReplicant(comp, replicant):
 
 
 def onReplicate(comp, allOps, newOps, template, master):
-    for c in newOps:
+    for c in newOps:        
         # c.display = True
         # c.render = True
         c.par.display = 1
@@ -21,16 +21,18 @@ def onReplicate(comp, allOps, newOps, template, master):
         midiout = c.op("constant1")
         midiout.par.value0 = 0
         # Run the existing chopexec2 DAT inside the replicants to initialize the MFT LED
+        # recreate knob colors
+        
         try:
-            changeLED.run(delayFrames=60)
-            parent().ChangeKnobLED(op("knob1"))
+            parent().ChangeKnobLED(c)
             print("ran changeLED script onReplicate")
         except Exception as e:
             print("didn't run chopexec2")
             print("Error:", e)
-
+        
+        c.tags.add("knob")
         # c.par.clone = comp.par.master
-    pass
+    pass    
 
     # parent().DelayHelper(parent().ApplyAssignments, delay_frames=120)
 
