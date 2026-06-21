@@ -21,9 +21,9 @@ def onReplicate(comp, allOps, newOps, template, master):
         midiout = c.op("constant1")
         midiout.par.value0 = 0
         # Run the existing chopexec2 DAT inside the replicants to initialize the MFT LED
-        changeLED = c.op("changeLED")
         try:
             changeLED.run(delayFrames=60)
+            parent().ChangeKnobLED(op("knob1"))
             print("ran changeLED script onReplicate")
         except Exception as e:
             print("didn't run chopexec2")

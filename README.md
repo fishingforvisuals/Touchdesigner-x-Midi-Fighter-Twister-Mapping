@@ -4,11 +4,12 @@ A TouchDesigner module for mapping knob values onto a midi controller. Parameter
 ---
 <!-- TODO: update features and how it works --> 
 ## ✨ Features
-- Dynamic operator + parameter mapping via lookup tables  
+- Dynamic operator + parameter mapping via drag and drop script
+
 - Store and recall functionality for parameter values (`midi_assignments` table)  
 - Reset system to clear all knob values before applying stored mappings (`opfind1` table)  
 - Easy integration with **CHOP Execute DATs** or scripts for MIDI/OSC workflows  
-- Clean, object-oriented structure using TouchDesigner’s `EXT` class convention  
+- object-oriented structure using TouchDesigner’s `EXT` class convention  
 <!-- TODO: this basic patch could still handle: more banks, and resets, basic recal of last settings -->
 
 ---
