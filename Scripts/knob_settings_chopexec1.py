@@ -16,11 +16,10 @@ def onOffToOn(channel: Channel, sampleIndex: int, val: float,
 	modkeys = op("modkeys")
 
 
-	def updateSettings(label, curChannel):
+	def updateSettings(label, focusChannel):
 		"""
-		
+		insert label and select the knob_colors and parameters to view
 		"""
-		print(label)
 
 		t_label = op('masterHeader')
 		t_params = op('knob_parameter')
@@ -29,12 +28,12 @@ def onOffToOn(channel: Channel, sampleIndex: int, val: float,
 		t_label.par.Headerlabel = label
 
 		# update current parameter settings to view
-		knob_path = f"/project1/midiFighterTwisterV2/{channel.name}"
+		knob_path = f"/project1/midiFighterTwisterV2/{focusChannel}"
 		t_params.par.op = knob_path
-
+		
 		# define selection of color parameters in focus_knobcolor CHOP
 		focus_color = op("focus_knobcolor")
-		focus_color.par.chops = f"/project1/midiFighterTwisterV2/{curChannel}/par1"
+		focus_color.par.chops = f"/project1/midiFighterTwisterV2/{focusChannel}/par1"
 
 
 	######### prepare selection infrastructure #########
@@ -59,8 +58,8 @@ def onOffToOn(channel: Channel, sampleIndex: int, val: float,
 			seq[i].par.value = ch.eval()
 		
 		updateSettings(channel.name, channel.name)
-		# store channel.name to last_channel_name variable
-		me.store('last_channel_name', channel.name)
+		
+		me.store("last_channel_name", channel.name) 	# store channel.name to last_channel_name variable
 
 
 	# select a range of knobs by clicking on 2 different knobs, keep the first selected knob as last_channel_knob
@@ -81,7 +80,7 @@ def onOffToOn(channel: Channel, sampleIndex: int, val: float,
 			seq[i-1].par.value = 1
 		
 		label_string = f"knob{range_list[0]}-{range_list[1]}"
-		updateSettings(label_string, channel.name)
+		updateSettings(label_string, last_name)
 
 	# with ctrl key pressed select or deselect knobs 
 	if modkeys['ctrl'].eval() == 1:
@@ -92,9 +91,9 @@ def onOffToOn(channel: Channel, sampleIndex: int, val: float,
 				block.par.value = 0 if current else 1
 			if block.par.value.eval() == 1:
 				label_string += f"{block.par.name.eval().replace('knob', '')}, "
-				updateSettings(label_string, channel.name)
-	
-	return
+				updateSettings(label_string, last_name)
+		
+		return
 
 def whileOn(channel: Channel, sampleIndex: int, val: float, 
 			prev: float):
