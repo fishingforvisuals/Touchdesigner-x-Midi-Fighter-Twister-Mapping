@@ -1,13 +1,14 @@
 # Touchdesigner-x-Midi-Fighter-Twister-Mapping
 A TouchDesigner module for mapping knob values onto a midi controller. Parameters can be updated dynamically per drag and drop functionality. It will store the last settings of the knobs but the actual storage handling should be managed by the vj software were it sits in.
 
----
-<!-- TODO: update features and how it works --> 
+--- 
 ## ✨ Features
+- uses ch1-16 of Midi Fighter Twister to map on
 - Dynamic operator + parameter mapping via drag and drop functionality onto UI knobs
 - Store and recall functionality for last parameter values (`knob_settings` table) on start() and exit() of execute DAT 
 - Easy integration with **CHOP Execute DATs** or scripts for MIDI/OSC workflows  
 - basic recall of last settings
+<!-- TODO: make paths relative or add a settings page where base path can be defined to prepare the tox -->
 
 ---
 
@@ -31,3 +32,6 @@ A TouchDesigner module for mapping knob values onto a midi controller. Parameter
 
 ## Features to come:
 <!-- TODO: this basic patch could still handle: more banks and presets  -->
+- support more banks and presets
+- support for different midi controllers
+- support for dynamic integration into projects (with relative references or a settings page to define the base path)
