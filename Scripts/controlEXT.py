@@ -10,6 +10,8 @@ class MidiControllerEXT:
 
     def GetColIndex(self, table, col_name):
         """Return the index of col_name in the first row of the table"""
+        # TODO: needs to be checked, where used?
+        
         header_row = table.rows()[0]  # first row
         for i, cell in enumerate(header_row):
             if cell.val == col_name:
@@ -23,6 +25,7 @@ class MidiControllerEXT:
             param: is the parameter name that will be stored
             knob: defines from which operator to pull the parameter value from
         """
+        # TODO: needs to be checked, where used?
         self.target_table[knob.name, param] = knob.par[param]
 
 
@@ -32,6 +35,7 @@ class MidiControllerEXT:
         Store current value of `param_name` from each knob listed in self.source_table (opfind1)
         into the corresponding row in self.target_table without deleting rows.
         """
+        # TODO: needs to be checked, where used?
         print("store data")
         if not self.target_table or not self.source_table:
             print("[MyExt] source_table or target_table not found")
@@ -71,6 +75,7 @@ class MidiControllerEXT:
         par_name: parameter name string
         val: value to set
         """
+        # TODO: needs to be checked, where used?
 
         try:
             knob = self.oop(op_path)  # resolve operator
@@ -88,6 +93,7 @@ class MidiControllerEXT:
         Assumes table format:
             stack | # | ... | param columns ...
         """
+        # TODO: needs to be checked, where used?
         print("applying assignments")
         table = self.target_table
         num_rows = table.numRows
@@ -126,6 +132,7 @@ class MidiControllerEXT:
         Keeps header row intact. Default reset value = 0.
         Works by indexing through the table like op('tableDAT')[row, col].
         """
+        # TODO: needs to be checked, where used?
         table = self.target_table
         num_rows = table.numRows
         num_cols = table.numCols
@@ -154,6 +161,7 @@ class MidiControllerEXT:
         """
         Store current values of parameters listed in param_names into target_table.
         """
+        # TODO: needs to be checked, where used?
         if param_names is None:
             param_names = [
                 "Knoblevelcolorr",
@@ -172,6 +180,7 @@ class MidiControllerEXT:
         """
         Recreate all replicants for the given replicator COMP.
         """
+        # TODO: needs to be checked, where used?
         replicator = op(replicator_op)
         if replicator:
             replicator.par.recreateall.pulse()
@@ -182,11 +191,13 @@ class MidiControllerEXT:
         """
         Run any function after a delay of delay_frames.
         """
+        # TODO: needs to be checked, where used?
         run(func, delayFrames=delay_frames)
 
     def StoreRecreateApply(
         self, param_names=None, replicator_op="replicator1", apply_delay=10
     ):
+        # TODO: needs to be checked, where used?
         """
         Convenience method to store -> recreate -> apply assignments.
         """
@@ -208,7 +219,6 @@ class MidiControllerEXT:
         print(selected_knobs)
 
         return selected_knobs
-
         
     def ChangeKnobLED(self):
         """
