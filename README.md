@@ -4,43 +4,30 @@ A TouchDesigner module for mapping knob values onto a midi controller. Parameter
 ---
 <!-- TODO: update features and how it works --> 
 ## ✨ Features
-- Dynamic operator + parameter mapping via drag and drop script
-
-- Store and recall functionality for parameter values (`midi_assignments` table)  
-- Reset system to clear all knob values before applying stored mappings (`opfind1` table)  
+- Dynamic operator + parameter mapping via drag and drop functionality onto UI knobs
+- Store and recall functionality for last parameter values (`knob_settings` table) on start() and exit() of execute DAT 
 - Easy integration with **CHOP Execute DATs** or scripts for MIDI/OSC workflows  
-- object-oriented structure using TouchDesigner’s `EXT` class convention  
-<!-- TODO: this basic patch could still handle: more banks, and resets, basic recal of last settings -->
+- basic recall of last settings
 
 ---
 
-## ⚙️ How it Works
-- **`opfind1` table** → lists all knobs and their parameters (used for reset)  
+## ⚙️ core
+- **`MidiControllerEXT` class** provides methods:  
+  - `ChangeKnobColor()` → changes ui and midi colors per knob  
+  - `LabelKnob()` → recalls and applies stored mappings  
 
-- **`MainEXT` class** provides methods:  
-  - `reset_knobs()` → clears all knobs to a default value  
-  - `apply_assignments()` → recalls and applies stored mappings  
-  - `store_data()` → updates an individual parameter dynamically  
+## How to use
+- drag parameters onto a ui knob to assign it to it
+- click onto ui knobs to select knobs and change settings in the parameter viewer section. Use these keys for multiselection:
+    - shift: range of knobs
+    - ctrl: add or remove single knobs 
 
 ---
 
 ## 🎛️ Use Cases
 - MIDI or OSC controlled installations  
 - Live performance setups with dynamic mapping  
-- Visual projects requiring quick reset + recall of parameter states  
+- Visual projects requiring quick reset + recall of parameter states
 
----
-
-## 📖 Example Workflow
-```python
-# Reset all knobs to default
-op('base1').ext.Main.reset_knobs()
-
-# Apply stored assignments
-op('base1').ext.Main.apply_assignments()
-
-# Update a single knob dynamically
-op('base1').ext.Main.store_data("knob1", "Knoblevelcolorr", 0.5)
-
-
-Visual projects requiring quick reset + recall of parameter states
+## Features to come:
+<!-- TODO: this basic patch could still handle: more banks and presets  -->
