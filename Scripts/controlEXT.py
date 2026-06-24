@@ -195,8 +195,22 @@ class MidiControllerEXT:
 
         # delayed application
         self.DelayHelper(self.ApplyAssignments, apply_delay)
+
+    def GetSelectedKnobs(self):
+        """
+        check what knobs are currently selected
+        Returns:
+            List of currently selected knobs
+        """
+        const = op("/project1/knob_ui/selection")
+        seq = const.seq.const
+        selected_knobs = [knob.par.name for knob in seq if knob.par.value == 1]
+        print(selected_knobs)
+
+        return selected_knobs
+
         
-    def ChangeKnobLED(self, knob):
+    def ChangeKnobLED(self):
         """
         updates the knobs ui and midi controller color. Converts values accordingly
         Args:
@@ -207,17 +221,28 @@ class MidiControllerEXT:
 
         from utils import knob_utils
 
-        source = op(f"{knob.path}/par1")
-        # convert from rgb to hsv
-        r, g, b = source[0].eval(), source[1].eval(), source[2].eval()
-        midi_hue = knob_utils.rgb_to_hue(r, g, b)
-        
+        knob_list = self.GetSelectedKnobs()
 
-        # Midi Fighter Twister has a different hue mapping compared to TD
-        # reversing the values solves the issue
-        midiout = op(f"{knob.path}/constant1")
-        midiout_remap = ((1 - midi_hue) -1/3) %1
-        midiout.par.value0 = midiout_remap
+        
+        focus_color_op = op("/project1/knob_ui/focus_knobcolor")
+        focus_color_rgb = [color.eval() for color in focus_color_op.chans()]
+ 
+        for knob_name in knob_list:
+            # print(knob_name)
+            
+            knob_op = op(f"/project1/midiFighterTwisterV2/{knob_name}")    
+            # convert from rgb to hsv
+            r, g, b = focus_color_rgb[0], focus_color_rgb[1], focus_color_rgb[2]
+            midi_hue = knob_utils.rgb_to_hue(r, g, b)
+            
+
+            # Midi Fighter Twister has a different hue mapping compared to TD
+            # reversing the values solves the issue
+            # print("knob_op.path: ", knob_op.path)
+            midiout = knob_op.op("constant1")
+            # print("midiout: ", midiout)
+            midiout_remap = ((1 - midi_hue) -1/3) %1
+            midiout.par.value0 = midiout_remap
             
     def LabelKnob(self, comp, update_range, scope):
         """
