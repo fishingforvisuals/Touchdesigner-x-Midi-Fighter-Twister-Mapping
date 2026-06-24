@@ -23,7 +23,7 @@ def onReplicate(comp, allOps, newOps, template, master):
         
         # recreate knob colors
         try:
-            parent().ChangeKnobLED(c)
+            parent().ChangeKnobColor(c)
             print("ran changeLED script onReplicate")
         except Exception as e:
             print("didn't run chopexec2")

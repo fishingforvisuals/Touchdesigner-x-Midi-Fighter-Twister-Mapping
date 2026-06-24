@@ -1,3 +1,5 @@
+import colorsys
+
 class MidiControllerEXT:
     def __init__(self, ownerCOMP):
         self.ownerCOMP = ownerCOMP
@@ -11,7 +13,7 @@ class MidiControllerEXT:
     def GetColIndex(self, table, col_name):
         """Return the index of col_name in the first row of the table"""
         # TODO: needs to be checked, where used?
-        
+
         header_row = table.rows()[0]  # first row
         for i, cell in enumerate(header_row):
             if cell.val == col_name:
@@ -25,7 +27,6 @@ class MidiControllerEXT:
             param: is the parameter name that will be stored
             knob: defines from which operator to pull the parameter value from
         """
-        # TODO: needs to be checked, where used?
         self.target_table[knob.name, param] = knob.par[param]
 
 
@@ -216,46 +217,41 @@ class MidiControllerEXT:
         const = op("/project1/knob_ui/selection")
         seq = const.seq.const
         selected_knobs = [knob.par.name for knob in seq if knob.par.value == 1]
-        print(selected_knobs)
-
         return selected_knobs
-        
-    def ChangeKnobLED(self):
+
+
+
+    def rgb_to_hue(self,r, g, b):
+        """Convert RGB (0-1) to MIDI hue 0-127"""
+        h, s, v = colorsys.rgb_to_hsv(r, g, b)
+        # print (h, s, v)
+        return float(h)
+    
+    def ChangeKnobColor(self, knobName, color):
         """
         updates the knobs ui and midi controller color. Converts values accordingly
         Args:
-            knob: knob operator that will be updated
+            knobName: knob of which the color will be changed
         """
-        import sys
-        sys.path.append(f"{project.folder}")
+    
+        ####### update color in ui #######            
+        knob_op = op(f"/project1/midiFighterTwisterV2/{knobName}")
 
-        from utils import knob_utils
 
-        knob_list = self.GetSelectedKnobs()
+        r, g, b = color[0], color[1], color[2]
 
-        
-        focus_color_op = op("/project1/knob_ui/focus_knobcolor")
-        focus_color_rgb = [color.eval() for color in focus_color_op.chans()]
- 
-        for knob_name in knob_list:
-            ####### update color in ui #######            
-            knob_op = op(f"/project1/midiFighterTwisterV2/{knob_name}")
-            knob_op.par.Knobcolorr = focus_color_rgb[0]
-            knob_op.par.Knobcolorg = focus_color_rgb[1]
-            knob_op.par.Knobcolorb  = focus_color_rgb[2]
-            print(knob_name, focus_color_rgb)
+        knob_op.par.Knobcolorr = r
+        knob_op.par.Knobcolorg = g
+        knob_op.par.Knobcolorb  = b
 
-            ####### send color values to midi controller #######    
-            # convert from rgb to hsv
-            r, g, b = focus_color_rgb[0], focus_color_rgb[1], focus_color_rgb[2]
-            midi_hue = knob_utils.rgb_to_hue(r, g, b)
-            
-
-            # Midi Fighter Twister has a different hue mapping compared to TD
-            # reversing the values solves the issue
-            midiout = knob_op.op("constant1")
-            midiout_remap = ((1 - midi_hue) -1/3) %1
-            midiout.par.value0 = midiout_remap
+        ####### send color values to midi controller #######    
+        # convert from rgb to hsv
+        midi_hue = self.rgb_to_hue(r, g, b)
+        # Midi Fighter Twister has a different hue mapping compared to TD
+        # reversing the values solves the issue
+        midiout = knob_op.op("constant1")
+        midiout_remap = ((1 - midi_hue) -1/3) %1
+        midiout.par.value0 = midiout_remap
             
     def LabelKnob(self, comp, update_range, scope):
         """
