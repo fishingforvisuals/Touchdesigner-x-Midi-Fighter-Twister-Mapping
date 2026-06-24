@@ -228,9 +228,14 @@ class MidiControllerEXT:
         focus_color_rgb = [color.eval() for color in focus_color_op.chans()]
  
         for knob_name in knob_list:
-            # print(knob_name)
-            
-            knob_op = op(f"/project1/midiFighterTwisterV2/{knob_name}")    
+            ####### update color in ui #######            
+            knob_op = op(f"/project1/midiFighterTwisterV2/{knob_name}")
+            knob_op.par.Knobcolorr = focus_color_rgb[0]
+            knob_op.par.Knobcolorg = focus_color_rgb[1]
+            knob_op.par.Knobcolorb  = focus_color_rgb[2]
+            print(knob_name, focus_color_rgb)
+
+            ####### send color values to midi controller #######    
             # convert from rgb to hsv
             r, g, b = focus_color_rgb[0], focus_color_rgb[1], focus_color_rgb[2]
             midi_hue = knob_utils.rgb_to_hue(r, g, b)
@@ -238,9 +243,7 @@ class MidiControllerEXT:
 
             # Midi Fighter Twister has a different hue mapping compared to TD
             # reversing the values solves the issue
-            # print("knob_op.path: ", knob_op.path)
             midiout = knob_op.op("constant1")
-            # print("midiout: ", midiout)
             midiout_remap = ((1 - midi_hue) -1/3) %1
             midiout.par.value0 = midiout_remap
             
