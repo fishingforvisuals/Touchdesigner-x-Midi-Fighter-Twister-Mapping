@@ -34,4 +34,4 @@ A TouchDesigner module for mapping knob values onto a midi controller. Parameter
 <!-- TODO: this basic patch could still handle: more banks and presets  -->
 - support more banks and presets
 - support for different midi controllers
-- support for dynamic integration into projects (with relative references or a settings page to define the base path)
+- support for dynamic integration into projects (with relative references or a settings page to define the base path) and a tox version
