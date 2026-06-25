@@ -22,6 +22,9 @@ A TouchDesigner module for mapping knob values onto a midi controller. Parameter
 - click onto ui knobs to select knobs and change settings in the parameter viewer section. Use these keys for multiselection:
     - shift: range of knobs
     - ctrl: add or remove single knobs 
+- What I had to manually when I was dragging midiMap.tox into a project:
+    - open midi device mapper and create a mapping
+    - copy external scripts into project folder
 
 ---
 
