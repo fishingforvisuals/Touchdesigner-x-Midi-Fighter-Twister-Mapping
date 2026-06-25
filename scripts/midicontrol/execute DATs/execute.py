@@ -1,27 +1,41 @@
-ext = parent()
+# base COMP with extension
+base = parent(2)
+
+
 
 def onStart():
+	
 
 	# reset selection
-	const = op("/project1/knob_ui/selection")
+	const = base.op("knob_ui/selection")
 	seq = const.seq.const
 	for chan in seq:
 		chan.par.value = 0
+		
+	
+	
 
 
 	# recreate knob labels
-	comp = op("knob1") 
-	update_range = [1,17]
-	scope = op("/project1/engine/noise1")
-	run(f"{ext}.LabelKnob(args[0], args[1], args[2])", comp, update_range, scope, delayFrames=120)
+	# comp = op("knob1") 
+	# update_range = [1,17]
+	# scope = op("/engine/noise1")
+	# run(f"op/'{base}').LabelKnob(args[0], args[1], args[2])", comp, update_range, scope, delayFrames=120)
 
-	#recreate knob colors
+	
 	table = op("knob_settings")
 	all_knobs = [knob.name for knob in parent().findChildren(tags=["knob"])]
 	
+	
 	for knob in all_knobs:
+		#recreate knob colors
 		knob_color = [table[knob, "Knoblevelcolorr"], table[knob, "Knoblevelcolorg"], table[knob, "Knoblevelcolorb"]]
-		ext.ChangeKnobColor(knob, knob_color)
+		base.ChangeKnobColor(knob, knob_color)
+		
+		# restore knob values
+		stored_knob_value = float(table[knob, "Value0"])
+		op(knob).par.Value0 = stored_knob_value
+	
 	
 
 
@@ -31,17 +45,6 @@ def onCreate():
 	return
 
 def onExit():
-	# parent().StoreCurrentValues(param_name="Knoblevelcolorr")
-	# parent().StoreCurrentValues(param_name="Knoblevelcolorg")
-	# parent().StoreCurrentValues(param_name="Knoblevelcolorb")
-	# parent().StoreCurrentValues(param_name="Mfthue")
-	# parent().StoreCurrentValues(param_name="Bindparameterref")
-	# parent().StoreCurrentValues(param_name="Value0")
-	parameter_list = [param.val for param in op('knob_settings').row(0)[1:]]
-
-	for param in parameter_list:
-		for knob in parent().findChildren(tags=["knob"]):
-			parent().StoreSettings(param, knob)
 	return
 
 def onFrameStart(frame):
@@ -57,6 +60,11 @@ def onDeviceChange():
 	return
 
 def onProjectPreSave():
+	parameter_list = [param.val for param in op('knob_settings').row(0)[1:]]
+
+	for param in parameter_list:
+		for knob in parent().findChildren(tags=["knob"]):
+			base.StoreSettings(param, knob)
 	return
 
 def onProjectPostSave():
