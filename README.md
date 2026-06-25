@@ -1,5 +1,5 @@
 # Touchdesigner-x-Midi-Fighter-Twister-Mapping
-A TouchDesigner module for mapping knob values onto a midi controller. Parameters can be updated dynamically per drag and drop functionality. It will store the last settings of the knobs but the actual storage handling should be managed by the vj software were it sits in.
+A TouchDesigner module for mapping knob values onto a midi controller. Parameters can be updated dynamically per drag and drop functionality. It will store the last settings of the knobs but the ac[...]
 
 --- 
 ## ✨ Features
@@ -14,8 +14,8 @@ A TouchDesigner module for mapping knob values onto a midi controller. Parameter
 
 ## ⚙️ core
 - **`MidiControllerEXT` class** provides methods:  
-  - `ChangeKnobColor()` → changes ui and midi colors per knob  
-  - `LabelKnob()` → recalls and applies stored mappings  
+   - `ChangeKnobColor()` → changes ui and midi colors per knob  
+   - `LabelKnob()` → recalls and applies stored mappings  
 
 ## How to use
 - drag parameters onto a ui knob to assign it to it
@@ -35,3 +35,9 @@ A TouchDesigner module for mapping knob values onto a midi controller. Parameter
 - support more banks and presets
 - support for different midi controllers
 - support for dynamic integration into projects (with relative references or a settings page to define the base path)
+
+---
+
+## 📝 Documentation
+
+For detailed version history and changelog, see [CHANGELOG.md](CHANGELOG.md).
