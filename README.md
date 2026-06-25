@@ -14,8 +14,8 @@ A TouchDesigner module for mapping knob values onto a midi controller. Parameter
 
 ## ⚙️ core
 - **`MidiControllerEXT` class** provides methods:  
-  - `ChangeKnobColor()` → changes ui and midi colors per knob  
-  - `LabelKnob()` → recalls and applies stored mappings  
+   - `ChangeKnobColor()` → changes ui and midi colors per knob  
+   - `LabelKnob()` → recalls and applies stored mappings  
 
 ## How to use
 - drag parameters onto a ui knob to assign it to it
@@ -34,4 +34,10 @@ A TouchDesigner module for mapping knob values onto a midi controller. Parameter
 <!-- TODO: this basic patch could still handle: more banks and presets  -->
 - support more banks and presets
 - support for different midi controllers
-- support for dynamic integration into projects (with relative references or a settings page to define the base path) and a tox version
+- support for dynamic integration into projects (with relative references or a settings page to define the base path)
+
+---
+
+## 📝 Documentation
+
+For detailed version history and changelog, see [CHANGELOG.md](CHANGELOG.md).
