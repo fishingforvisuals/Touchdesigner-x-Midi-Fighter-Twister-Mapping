@@ -1,3 +1,6 @@
+# base COMP with extension
+base = op(f'{parent(2)}')
+
 def onRemoveReplicant(comp, replicant):
     # print("remove replicants")
     # parent().StoreCurrentValues(param_name="Knoblevelcolorr")
@@ -23,7 +26,7 @@ def onReplicate(comp, allOps, newOps, template, master):
         
         # recreate knob colors
         try:
-            parent().ChangeKnobColor(c)
+            base.ChangeKnobColor(c)
             print("ran changeLED script onReplicate")
         except Exception as e:
             print("didn't run chopexec2")

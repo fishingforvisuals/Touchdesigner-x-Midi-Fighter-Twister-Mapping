@@ -6,9 +6,10 @@ class MidiControllerEXT:
         oop = self.ownerCOMP.op
         self.oop = oop
 
-        # references to your tables
-        # self.source_table = self.oop("opfind1")
-        self.target_table = self.oop("knob_settings")
+        # recurring references
+        self.Target_table = self.oop("knobs/knob_settings")  # last knob_settings table DAT
+        self.Knob_selection = self.oop("knob_ui/selection")  # constant CHOP with states of currently selected knobs
+        self.Knobs = self.oop("knobs")
 
     def GetColIndex(self, table, col_name):
         """Return the index of col_name in the first row of the table"""
@@ -20,32 +21,35 @@ class MidiControllerEXT:
                 return i
         return None  # not found
     
+    def TestFunction(self):
+        print(self.Target_table)
+    
     def StoreSettings(self, param, knob):
         """
-        Store the settings of each knob and take all the listed parameters from the target_table (which is the knob_settings table). With the arguments this is a per parameter approach which gives you the ability to decide how many parameters should be stored with this function.
+        Store the settings of each knob and take all the listed parameters from the Target_table (which is the knob_settings table). With the arguments this is a per parameter approach which gives you the ability to decide how many parameters should be stored with this function.
         Args:
             param: is the parameter name that will be stored
             knob: defines from which operator to pull the parameter value from
         """
-        self.target_table[knob.name, param] = knob.par[param]
+        self.Target_table[knob.name, param] = knob.par[param]
 
 
 
     def StoreCurrentValues(self, param_name):
         """
         Store current value of `param_name` from each knob listed in self.source_table (opfind1)
-        into the corresponding row in self.target_table without deleting rows.
+        into the corresponding row in self.Target_table without deleting rows.
         """
         # TODO: needs to be checked, where used?
         print("store data")
-        if not self.target_table or not self.source_table:
-            print("[MyExt] source_table or target_table not found")
+        if not self.Target_table or not self.source_table:
+            print("[MyExt] source_table or Target_table not found")
             return
 
-        # find column index in target_table
-        col_index = self.GetColIndex(self.target_table, param_name)
+        # find column index in Target_table
+        col_index = self.GetColIndex(self.Target_table, param_name)
         if col_index is None:
-            print(f"[MyExt] Column '{param_name}' not found in target_table")
+            print(f"[MyExt] Column '{param_name}' not found in Target_table")
             return
 
         # find column index in source_table for knob names
@@ -65,7 +69,7 @@ class MidiControllerEXT:
             # access parameter safely with exact case
             par = getattr(knob.par, param_name, None)
             if par is not None:  # check the object, not its value
-                self.target_table[i + 1, col_index] = par.eval()
+                self.Target_table[i + 1, col_index] = par.eval()
             else:
                 print(f"[MyExt] Knob '{knob_name}' has no parameter '{param_name}'")
 
@@ -89,14 +93,14 @@ class MidiControllerEXT:
 
     def ApplyAssignments(self):
         """
-        Loop over rows in target_table and set parameters.
+        Loop over rows in Target_table and set parameters.
         Works with replicants: uses stable identifiers to match the operator.
         Assumes table format:
             stack | # | ... | param columns ...
         """
         # TODO: needs to be checked, where used?
         print("applying assignments")
-        table = self.target_table
+        table = self.Target_table
         num_rows = table.numRows
         num_cols = table.numCols
 
@@ -129,12 +133,12 @@ class MidiControllerEXT:
 
     def ResetKnobs(self, reset_val=""):
         """
-        Reset all knob-related values in target_table, except the 'stack' and '#' columns.
+        Reset all knob-related values in Target_table, except the 'stack' and '#' columns.
         Keeps header row intact. Default reset value = 0.
         Works by indexing through the table like op('tableDAT')[row, col].
         """
         # TODO: needs to be checked, where used?
-        table = self.target_table
+        table = self.Target_table
         num_rows = table.numRows
         num_cols = table.numCols
 
@@ -160,7 +164,7 @@ class MidiControllerEXT:
 
     def StoreHelper(self, param_names=None):
         """
-        Store current values of parameters listed in param_names into target_table.
+        Store current values of parameters listed in param_names into Target_table.
         """
         # TODO: needs to be checked, where used?
         if param_names is None:
@@ -180,8 +184,10 @@ class MidiControllerEXT:
     def RecreateReplicants(self, replicator_op="replicator1"):
         """
         Recreate all replicants for the given replicator COMP.
+        Args:
+            - replicator_op: path to a replicator op
         """
-        # TODO: needs to be checked, where used?
+        # TODO: pulsing the replicator like that is not doing much -> disable this function?
         replicator = op(replicator_op)
         if replicator:
             replicator.par.recreateall.pulse()
@@ -214,8 +220,8 @@ class MidiControllerEXT:
         Returns:
             List of currently selected knobs
         """
-        const = op("/project1/knob_ui/selection")
-        seq = const.seq.const
+
+        seq = self.Knob_selection.seq.const
         selected_knobs = [knob.par.name for knob in seq if knob.par.value == 1]
         return selected_knobs
 
@@ -235,7 +241,7 @@ class MidiControllerEXT:
         """
     
         ####### update color in ui #######            
-        knob_op = op(f"/project1/midiFighterTwisterV2/{knobName}")
+        knob_op = self.Knobs.op(knobName)
 
 
         r, g, b = color[0], color[1], color[2]
@@ -262,7 +268,8 @@ class MidiControllerEXT:
             comp: is the td COMP that updates the labels
             range: list of min and max of which knobs get updated, adds possibility to use two decks of visuals for example
             scope: op that filters bindReferences to update from
-        """        
+        """
+        # TODO: insert the whole operator and access its path via op.path        
         knob_base_path = comp.path[:-len(str(comp.digits))] # remove knob digit
 
 

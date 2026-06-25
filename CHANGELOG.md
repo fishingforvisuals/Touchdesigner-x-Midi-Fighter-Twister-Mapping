@@ -12,6 +12,10 @@ All notable changes to this project will be documented in this file.
 - Dynamic project integration with relative references
 - Enhanced documentation and examples
 
+### Changed:
+- external file paths of scripts and updated network accordingly
+- changed network and code to use relative references
+
 ---
 
 ## [0.1.0] - 2026-06-25

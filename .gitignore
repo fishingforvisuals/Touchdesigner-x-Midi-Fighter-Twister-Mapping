@@ -9,9 +9,10 @@ __pycache__/
 
 # TouchDesigner
 Backup/
-*.tox
+# *.tox
 *.bak
 *.*.toe
+test/
 
 
 # VS Code

@@ -1,3 +1,6 @@
+# base COMP with extension
+base = parent(2)
+
 def onOffToOn(channel: Channel, sampleIndex: int, val: float, 
 				prev: float):
 	"""
@@ -28,12 +31,12 @@ def onOffToOn(channel: Channel, sampleIndex: int, val: float,
 		t_label.par.Headerlabel = label
 
 		# update current parameter settings to view
-		knob_path = f"/project1/midiFighterTwisterV2/{focusChannel}"
+		knob_path = f"{base.path}/knobs/{focusChannel}"
 		t_params.par.op = knob_path
 		
 		# define selection of color parameters in focus_knobcolor CHOP
 		focus_color = op("focus_knobcolor")
-		focus_color.par.chops = f"/project1/midiFighterTwisterV2/{focusChannel}/par1"
+		focus_color.par.ops = f"{base.path}/knobs/{focusChannel}"
 
 
 	######### prepare selection infrastructure #########
@@ -69,7 +72,6 @@ def onOffToOn(channel: Channel, sampleIndex: int, val: float,
 
 		range_list = [last_knob_digits, current_knob_digits]
 		range_list = sorted(range_list)
-		print(range_list)
 
 		# reset all values in selection CHOP
 		for i, ch in enumerate(src.chans()):

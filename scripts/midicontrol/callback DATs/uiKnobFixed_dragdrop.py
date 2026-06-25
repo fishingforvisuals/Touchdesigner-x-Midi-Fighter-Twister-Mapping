@@ -1,4 +1,6 @@
 # callbacks for when associated Panel is being dropped on
+# base COMP with extension
+base = parent(2)
 
 def onHoverStartGetAccept(comp, info):
 	"""
@@ -59,7 +61,7 @@ def onDropGetResults(comp, info):
 	update_range = [1,17]
 	scope = dropped_item.owner
 	# update labels in specific range via main.py script
-	run("parent().LabelKnob(args[0], args[1], args[2])", comp, update_range, scope, delayFrames=1)
+	run(f"op('{base}').LabelKnob(args[0], args[1], args[2])", comp, update_range, scope, delayFrames=1)
 	
 
 # callbacks for when associated Panel is being dragged
