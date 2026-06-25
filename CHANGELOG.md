@@ -7,11 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Planned for v1.0.0
-- Support for multiple banks and presets
+### Planned for v2+
 - Support for different MIDI controllers
+- Support for multiple banks and presets
+
+### Planned for v1.0.0
 - Dynamic project integration with relative references
-- Settings page for base path configuration
 - Enhanced documentation and examples
 
 ---
